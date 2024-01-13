@@ -5,60 +5,103 @@
     android:layout_height="match_parent"
     tools:context=".activities.BoxActivity" >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="222dp"
-        android:layout_height="101dp"
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Просмотр продукции в ящике"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="30sp"
+        android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.005" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="DuplicateIds" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="128dp"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="DuplicateIds" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="409dp"
-        android:layout_height="296dp"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="1dp"
-        tools:ignore="MissingConstraints">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="684dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.063"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
-            android:id="@+id/barcodeView"
-            android:layout_width="409dp"
-            android:layout_height="52dp"
-            android:text="TextView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="3dp"
-            tools:ignore="MissingConstraints" />
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/title_box"
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/infoView"
-            android:layout_width="408dp"
-            android:layout_height="49dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="2dp"
-            tools:ignore="MissingConstraints" />
+            android:id="@+id/boxLabel"
+            android:layout_width="330dp"
+            android:layout_height="32dp"
+            android:layout_alignTop="@id/label"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/label"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="24sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/productLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/label"
+            android:text="@string/title_product"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="24sp"/>
+
+        <!--ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="519dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="76dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/informBoxTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="518dp"
+                    android:text="TextView" />
+            </LinearLayout>
+
+
+        </ScrollView-->
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/productLabel"
+            android:layout_marginTop="10dp">
+
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:stretchColumns="*" />
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
