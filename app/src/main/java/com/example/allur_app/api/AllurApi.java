@@ -27,7 +27,7 @@ public class AllurApi {
             String answer = "";
 
             Request request = new Request.Builder()
-                    .url("http://192.168.210.254:7078/v1/box/inform/" + requestId)
+                    .url("http://94.241.139.199:7078/v1/box/inform/" + requestId)
                     .build();
 
             try (Response response = okHttpClient.newCall(request).execute()){

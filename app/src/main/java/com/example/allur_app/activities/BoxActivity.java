@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -31,8 +32,8 @@ public class BoxActivity extends AppCompatActivity {
     public static final String SCAN_DECODING_DATA = ScannerUtil.SCAN_DECODING_DATA;
     public static final String SCAN_SYMBOLOGY_TYPE = ScannerUtil.SCAN_SYMBOLOGY_TYPE;
     private TextView barcodeTextView;
-    private TextView boxInformTextView;
-    private NestedScrollView nestedScrollView;
+
+    private Button backButton;
     private TableLayout tableLayout;
 
     private final BroadcastReceiver dataReceiver = new BroadcastReceiver() {
@@ -47,6 +48,7 @@ public class BoxActivity extends AppCompatActivity {
                 AllurApi api = new AllurApi();
                 assert barcode != null;
                 tableLayout.removeAllViews();
+                addTableHeader(tableLayout);
                 api.request(barcode)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -72,9 +74,9 @@ public class BoxActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_box);
-        barcodeTextView = findViewById(R.id.boxLabel);
-        nestedScrollView = findViewById(R.id.nestedScrollView);
         tableLayout = findViewById(R.id.tableLayout);
+        barcodeTextView = findViewById(R.id.boxLabel);
+        backButton = findViewById(R.id.backButton);
     }
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
@@ -84,21 +86,43 @@ public class BoxActivity extends AppCompatActivity {
         registerReceiver(dataReceiver, new IntentFilter(SCAN_DECODING_BROADCAST));
     }
 
-    @SuppressLint({"CheckResult", "SetTextI18n"})
-    private void setAnswer() {
-
+    public void backClick(View view){
+        Intent intent = new Intent(this, StartActivity.class);
+        startActivities(new Intent[]{intent});
     }
 
     private void addTableRow(TableLayout tableLayout, String col1, String col2, String col3) {
         TableRow row = new TableRow(this);
 
-        TextView textView1 = createTextView(col1);
-        TextView textView2 = createTextView(col2);
-        TextView textView3 = createTextView(col3);
+        TextView id = createTextView(col1);
+        TextView description = createTextView(col2);
+        TextView count = createTextView(col3);
+
+        id.setLayoutParams(new TableRow.LayoutParams(0, description.getMaxHeight(), 2f));
+        description.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f));
+        count.setLayoutParams(new TableRow.LayoutParams(0, description.getMaxHeight(), 1f));
+
+        row.addView(id);
+        row.addView(description);
+        row.addView(count);
+
+        tableLayout.addView(row);
+    }
+
+    private void addTableHeader(TableLayout tableLayout) {
+        TableRow row = new TableRow(this);
+
+        TextView textView1 = createTextView("id");
+        TextView textView2 = createTextView("desc");
+        TextView textView3 = createTextView("count");
 
         textView1.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f));
         textView2.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f));
         textView3.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+
+        setCellTopBorder(textView1);
+        setCellTopBorder(textView2);
+        setCellTopBorder(textView3);
 
         row.addView(textView1);
         row.addView(textView2);
@@ -107,11 +131,15 @@ public class BoxActivity extends AppCompatActivity {
         tableLayout.addView(row);
     }
 
-    private void addBorder(TextView textView) {
+    private void addBorder(TextView textView, byte width) {
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(0xFFFFFFFF);
         gd.setStroke(2, 0xFF000000);
         textView.setBackground(gd);
+    }
+
+    private void setCellTopBorder(TextView textView) {
+        textView.setBackgroundResource(R.drawable.cell_border);
     }
 
     private TextView createTextView(String text) {

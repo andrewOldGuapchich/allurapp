@@ -30,6 +30,7 @@ android {
 
 dependencies {
     implementation("org.projectlombok:lombok:1.18.22")
+    implementation("androidx.core:core:1.12.0")
     annotationProcessor("org.projectlombok:lombok:1.18.22")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
