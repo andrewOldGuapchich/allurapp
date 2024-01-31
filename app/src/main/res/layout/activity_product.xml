@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.box.BoxActivity">
+    tools:context=".activities.product.ProductActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Просмотр продукции в ящике"
+        android:text="Информация о продукте"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="24sp"
@@ -41,17 +41,17 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="@string/title_box"
+            android:text="Изделие: "
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/boxLabel"
+            android:id="@+id/productTitle"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@id/label"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/label"
             android:text="@string/waitScan"
+            android:layout_toRightOf="@id/label"
             android:fontFamily="sans-serif-condensed"
             android:textSize="18sp" />
 
@@ -86,22 +86,13 @@
 
         <Button
             android:id="@+id/menuButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:onClick="menuClick"
             android:text="Меню"
-            android:onClick="backClick"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <Button
-            android:id="@+id/moveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/menuButton"
-            android:text="Перемещение"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+             />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

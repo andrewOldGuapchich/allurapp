@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">allur-app</string>
+    <string name="app_name">Allur</string>
     <string name="buttonBox">Что в ящике</string>
     <string name="buttonProduct">Где продукция</string>
     <string name="buttonReplace">Перемещение</string>
     <string name="title_box">Ящик:</string>
     <string name="title_product">Продукция</string>
+    <string name="waitScan">Ожидание сканирования...</string>
 </resources>

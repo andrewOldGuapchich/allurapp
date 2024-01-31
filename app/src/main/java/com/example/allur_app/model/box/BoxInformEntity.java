@@ -1,4 +1,4 @@
-package com.example.allur_app.model;
+package com.example.allur_app.model.box;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
