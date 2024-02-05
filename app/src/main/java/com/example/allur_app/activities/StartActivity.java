@@ -9,6 +9,7 @@ import android.view.View;
 import com.example.allur_app.activities.box.BoxInform;
 import com.example.allur_app.R;
 import com.example.allur_app.activities.box.BoxActivity;
+import com.example.allur_app.activities.move.SelectMoveActivity;
 import com.example.allur_app.activities.product.ProductActivity;
 
 // TODO: 19.12.2023 disable scanner
@@ -34,6 +35,12 @@ public class StartActivity extends AppCompatActivity {
 
     public void onClickProduct(View view){
         Intent intent = new Intent(this, ProductActivity.class);
+        startActivities(new Intent[]{intent});
+        finish();
+    }
+
+    public void onClickMove(View view){
+        Intent intent = new Intent(this, SelectMoveActivity.class);
         startActivities(new Intent[]{intent});
         finish();
     }

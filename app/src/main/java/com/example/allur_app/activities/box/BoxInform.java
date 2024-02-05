@@ -146,7 +146,6 @@ public class BoxInform extends AppCompatActivity {
                 1f
         ));
         textView.setPadding(8, 8, 8, 8);
-
         TableRow.LayoutParams params = (TableRow.LayoutParams) textView.getLayoutParams();
         params.setMargins(1, 1, 1, 1);
         textView.setLayoutParams(params);

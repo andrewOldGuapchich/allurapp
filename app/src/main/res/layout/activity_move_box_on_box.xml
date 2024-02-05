@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".activities.move.MoveActivityBoxOnBox">
+
+    <TextView
+        android:id="@+id/titlePage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Из ящика в ящик"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="160dp" />
+
+    <RelativeLayout
+        android:id="@+id/informLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlePage"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="-27dp">
+
+        <TableLayout
+            android:id="@+id/buttonTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#000000">
+
+            <TableRow
+                android:id="@+id/tableRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black">
+
+                <TextView
+                    android:id="@+id/cellFrom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onFromCellClick"
+                    android:padding="8dp"
+                    android:text="Откуда:" />
+
+                <TextView
+                    android:id="@+id/cellTo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onToCellClick"
+                    android:padding="8dp"
+                    android:text="Куда:" />
+            </TableRow>
+        </TableLayout>
+
+
+        <Button
+            android:id="@+id/productScanButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonTable"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:backgroundTint="#ffcfab"
+            android:gravity="center"
+            android:insetTop="4dp"
+            android:onClick="onButtonClick"
+            android:text="Режим сканирования изделий"
+            android:textColor="#151719"
+            app:iconPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/informLayout"
+        tools:ignore="MissingConstraints" >
+
+        <CheckBox
+            android:id="@+id/allCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Выбрать все" />
+
+        <TableLayout
+            android:id="@+id/headerProductTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/allCheckBox"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#000000">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="6"
+                    android:background="@color/white"
+                    android:padding="8dp"
+                    android:text="Товар" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:padding="8dp"
+                    android:text="Шт" />
+                </TableRow>
+        </TableLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerProductTable"
+            tools:ignore="MissingConstraints">
+
+            <TableLayout
+                android:id="@+id/productTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="#000000"
+                android:stretchColumns="*" />
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

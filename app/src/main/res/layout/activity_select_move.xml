@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
-    tools:context=".activities.StartActivity">
+    tools:context=".activities.move.SelectMoveActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -19,10 +19,10 @@
         android:rotationX="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
 
         <Button
@@ -30,9 +30,8 @@
             android:layout_width="250dp"
             android:layout_height="70dp"
             android:backgroundTint="@color/color_button"
-            android:onClick="onClickBox"
-            android:text="Ящик"
-            android:textColor="#151719"
+            android:onClick="boxOnBoxClick"
+            android:text="Из ящика в ящик"
             app:layout_constraintBottom_toTopOf="@+id/buttonBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
@@ -48,8 +47,7 @@
             android:layout_height="70dp"
             android:backgroundTint="@color/color_button"
             android:onClick="onClick"
-            android:text="@string/buttonBox"
-            android:textColor="#151719"
+            android:text="Из ящика на склад"
             app:layout_constraintBottom_toTopOf="@id/buttonProduct"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -64,8 +62,7 @@
             android:layout_height="70dp"
             android:backgroundTint="@color/color_button"
             android:onClick="onClickProduct"
-            android:text="@string/buttonProduct"
-            android:textColor="#151719"
+            android:text="Со склада в ящик"
             app:layout_constraintBottom_toTopOf="@id/buttonReplace"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -78,14 +75,25 @@
             android:layout_width="250dp"
             android:layout_height="70dp"
             android:backgroundTint="@color/color_button"
-            android:textColor="#151719"
-            android:text="@string/buttonReplace"
-            android:onClick="onClickMove"
+            android:text="Меню"
+            android:onClick="onMenuClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttonProduct" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Перемещение"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="168dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

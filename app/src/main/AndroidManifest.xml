@@ -16,6 +16,15 @@
         android:theme="@style/Theme.Allurapp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.move.MoveActivityBoxOnBox"
+            android:exported="false" />
+        <activity
+            android:name=".activities.move.MoveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.move.SelectMoveActivity"
+            android:exported="false" />
+        <activity
             android:name=".BoxActivity2"
             android:exported="false" />
         <activity
