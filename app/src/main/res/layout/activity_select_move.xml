@@ -63,25 +63,12 @@
             android:backgroundTint="@color/color_button"
             android:onClick="onClickProduct"
             android:text="Со склада в ящик"
-            app:layout_constraintBottom_toTopOf="@id/buttonReplace"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttonBox"
             app:layout_constraintVertical_chainStyle="packed" />
-
-        <Button
-            android:id="@+id/buttonReplace"
-            android:layout_width="250dp"
-            android:layout_height="70dp"
-            android:backgroundTint="@color/color_button"
-            android:text="Меню"
-            android:onClick="onMenuClick"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonProduct" />
 
         <TextView
             android:id="@+id/textView5"

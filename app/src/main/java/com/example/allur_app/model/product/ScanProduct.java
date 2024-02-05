@@ -1,21 +1,21 @@
 package com.example.allur_app.model.product;
 
 public class ScanProduct {
-    private long id;
+    private String id;
     private int count;
     private boolean isSelect;
 
-    public ScanProduct(long id, int count, boolean isSelect) {
+    public ScanProduct(String id, int count, boolean isSelect) {
         this.id = id;
         this.count = count;
         this.isSelect = isSelect;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

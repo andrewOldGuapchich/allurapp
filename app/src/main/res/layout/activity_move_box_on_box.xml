@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".activities.move.MoveActivityBoxOnBox">
 
     <TextView
         android:id="@+id/titlePage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Из ящика в ящик"
+        android:text="В ящик из ящика"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -33,23 +33,37 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:background="#000000">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onToCellClick"
+                    android:padding="8dp"
+                    android:text="В: "
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onFromCellClick"
+                    android:padding="8dp"
+                    android:text="Из: "
+                    android:textSize="18sp" />
+            </TableRow>
 
             <TableRow
                 android:id="@+id/tableRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black">
-
-                <TextView
-                    android:id="@+id/cellFrom"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:onClick="onFromCellClick"
-                    android:padding="8dp"
-                    android:text="Откуда:" />
 
                 <TextView
                     android:id="@+id/cellTo"
@@ -60,7 +74,18 @@
                     android:background="@color/white"
                     android:onClick="onToCellClick"
                     android:padding="8dp"
-                    android:text="Куда:" />
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/cellFrom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="onFromCellClick"
+                    android:padding="8dp"
+                    android:textSize="18sp" />
             </TableRow>
         </TableLayout>
 
@@ -78,6 +103,7 @@
             android:onClick="onButtonClick"
             android:text="Режим сканирования изделий"
             android:textColor="#151719"
+            android:visibility="invisible"
             app:iconPadding="4dp"
             app:layout_constraintBottom_toBottomOf="parent" />
     </RelativeLayout>
@@ -86,24 +112,16 @@
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/informLayout"
-        tools:ignore="MissingConstraints" >
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
-        <CheckBox
-            android:id="@+id/allCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="Выбрать все" />
 
         <TableLayout
             android:id="@+id/headerProductTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/allCheckBox"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:background="#000000">
@@ -112,13 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:padding="8dp"/>
+
 
                 <TextView
                     android:layout_width="0dp"
@@ -133,28 +145,61 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:background="@color/white"
                     android:padding="8dp"
                     android:text="Шт" />
-                </TableRow>
+            </TableRow>
         </TableLayout>
+    </RelativeLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollTable"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollTable"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@+id/lowRelativeLayout"
+        android:layout_below="@+id/headerProductTable"
+        tools:ignore="MissingConstraints,NotSibling">
+
+        <TableLayout
+            android:id="@+id/productTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/headerProductTable"
-            tools:ignore="MissingConstraints">
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#000000"
+            android:stretchColumns="*" />
+    </androidx.core.widget.NestedScrollView>
 
-            <TableLayout
-                android:id="@+id/productTable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="#000000"
-                android:stretchColumns="*" />
-        </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/lowRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/moveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:text="Перемещение"
+            android:enabled="false"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"
+            android:text="Очистить"
+            android:enabled="false"
+            android:onClick="onDeleteClick"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </RelativeLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

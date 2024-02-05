@@ -24,24 +24,20 @@ public class StartActivity extends AppCompatActivity {
     public void onClick(View view){
         Intent intent = new Intent(this, BoxActivity.class);
         startActivities(new Intent[]{intent});
-        finish();
     }
 
     public void onClickBox(View view){
         Intent intent = new Intent(this, BoxInform.class);
         startActivities(new Intent[]{intent});
-        finish();
     }
 
     public void onClickProduct(View view){
         Intent intent = new Intent(this, ProductActivity.class);
         startActivities(new Intent[]{intent});
-        finish();
     }
 
     public void onClickMove(View view){
         Intent intent = new Intent(this, SelectMoveActivity.class);
         startActivities(new Intent[]{intent});
-        finish();
     }
 }

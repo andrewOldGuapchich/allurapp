@@ -10,6 +10,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -21,8 +24,10 @@ import android.widget.TextView;
 
 import com.example.allur_app.R;
 import com.example.allur_app.activities.StartActivity;
+import com.example.allur_app.activities.move.MoveActivityBoxOnBox;
 import com.example.allur_app.api.AllurApi;
 import com.example.allur_app.model.box.BoxInformEntity;
+import com.example.allur_app.model.states.SoundState;
 import com.example.allur_app.utils.ScannerUtil;
 
 import java.util.List;
@@ -37,8 +42,17 @@ public class BoxActivity extends AppCompatActivity {
     private TextView barcodeTextView;
     private AlertDialog dialog;
 
-    private Button backButton;
+    private Button moveButton;
     private TableLayout tableLayout;
+
+    public void onClickMove(View view) {
+        Intent intent = new Intent(this, MoveActivityBoxOnBox.class);
+        tableLayout.removeAllViews();
+        intent.putExtra("idBox", barcodeTextView.getText());
+        startActivity(intent);
+
+        barcodeTextView.setText("Ожидание сканирования...");
+    }
 
     private final BroadcastReceiver dataReceiver = new BroadcastReceiver() {
         @SuppressLint({"SetTextI18n", "CheckResult"})
@@ -65,21 +79,16 @@ public class BoxActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if(result.getStatus() == 200) {
+                        sound(SoundState.OK);
                         addTableHeader(tableLayout);
                         for (BoxInformEntity b : (List<BoxInformEntity>) result.getBody()) {
                             addTableRow(tableLayout, b);
                         }
+                        moveButton.setEnabled(true);
                     } else {
+                        sound(SoundState.BAD);
                         showAlert("Ошибка!", "Ящик не найден!");
                         barcodeTextView.setText("Ожидание сканирования...");
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (dialog != null && dialog.isShowing()) {
-                                    dialog.dismiss();
-                                }
-                            }
-                        }, 1000);
                     }
                         },
                         error -> {
@@ -107,7 +116,7 @@ public class BoxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_box);
         tableLayout = findViewById(R.id.tableLayout);
         barcodeTextView = findViewById(R.id.boxLabel);
-        backButton = findViewById(R.id.menuButton);
+        moveButton = findViewById(R.id.moveButton);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("idBox")) {
@@ -126,11 +135,6 @@ public class BoxActivity extends AppCompatActivity {
         registerReceiver(dataReceiver, new IntentFilter(SCAN_DECODING_BROADCAST));
     }
 
-    public void backClick(View view){
-        Intent intent = new Intent(this, StartActivity.class);
-        startActivities(new Intent[]{intent});
-        finish();
-    }
 
     private void addTableRow(TableLayout tableLayout, BoxInformEntity boxInformEntity) {
         TableRow row = new TableRow(this);
@@ -174,5 +178,18 @@ public class BoxActivity extends AppCompatActivity {
         textView.setBackgroundColor(Color.WHITE);
 
         return textView;
+    }
+
+    private void sound(SoundState type){
+        try {
+            Uri uri;
+            if(type == SoundState.OK){
+                uri = Uri.parse("/system/media/audio/notifications/Proxima.ogg");
+            } else {
+                uri = Uri.parse("/system/media/audio/notifications/Rubidium.ogg");
+            }
+            Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), uri);
+            ringtone.play();
+        } catch (Exception e){}
     }
 }

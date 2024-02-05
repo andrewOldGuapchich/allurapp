@@ -11,6 +11,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +28,7 @@ import com.example.allur_app.R;
 import com.example.allur_app.activities.StartActivity;
 import com.example.allur_app.api.AllurApi;
 import com.example.allur_app.model.box.Box;
+import com.example.allur_app.model.states.SoundState;
 import com.example.allur_app.utils.ScannerUtil;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -34,7 +38,6 @@ public class BoxInform extends AppCompatActivity {
 
     public static final String SCAN_DECODING_BROADCAST = ScannerUtil.SCAN_DECODING_BROADCAST;
     public static final String SCAN_DECODING_DATA = ScannerUtil.SCAN_DECODING_DATA;
-    public static final String SCAN_SYMBOLOGY_TYPE = ScannerUtil.SCAN_SYMBOLOGY_TYPE;
     private TextView status;
 
     private Button informButton;
@@ -58,18 +61,13 @@ public class BoxInform extends AppCompatActivity {
         registerReceiver(getReceiver(), new IntentFilter(SCAN_DECODING_BROADCAST));
     }
 
-    public void backClick(View view){
-
-        Intent intent = new Intent(this, StartActivity.class);
-        startActivities(new Intent[]{intent});
-        finish();
-    }
 
     public void boxClick(View view) {
         Intent intent = new Intent(this, BoxActivity.class);
+        tableLayout.removeAllViews();
         intent.putExtra("idBox", status.getText());
         startActivity(intent);
-        finish();
+        status.setText("Ожидание сканирования...");
     }
 
     private BroadcastReceiver getReceiver() {
@@ -89,22 +87,15 @@ public class BoxInform extends AppCompatActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(result -> {
                             if(result.getStatus() == 200){
+                                sound(SoundState.OK);
                                 status.setText(barcode);
                                 addTableHeader(tableLayout, (Box) result.getBody());
                                 informButton.setEnabled(true);
                             }
                             else {
+                                sound(SoundState.BAD);
                                 showAlert("Ошибка!", "Ящик не найден!");
                                 status.setText("Ожидание сканирования...");
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (dialog != null && dialog.isShowing()) {
-                                            dialog.dismiss();
-                                        }
-                                    }
-                                }, 1000);
-                                informButton.setEnabled(false);
                             }
                         }, error -> {
                             Log.e("API_REQUEST", "Error: " + error.getMessage());
@@ -167,5 +158,18 @@ public class BoxInform extends AppCompatActivity {
                 });
         dialog = builder.create();
         dialog.show();
+    }
+
+    private void sound(SoundState type){
+        try {
+            Uri uri;
+            if(type == SoundState.OK){
+                uri = Uri.parse("/system/media/audio/notifications/Proxima.ogg");
+            } else {
+                uri = Uri.parse("/system/media/audio/notifications/Rubidium.ogg");
+            }
+            Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), uri);
+            ringtone.play();
+        } catch (Exception e){}
     }
 }

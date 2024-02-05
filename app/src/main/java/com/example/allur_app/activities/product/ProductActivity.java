@@ -49,7 +49,6 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
         productTextView = findViewById(R.id.productTitle);
         tableLayout = findViewById(R.id.tableLayout);
-        menuButton = findViewById(R.id.menuButton);
     }
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
@@ -100,10 +99,6 @@ public class ProductActivity extends AppCompatActivity {
         };
     }
 
-    private void createTable(ProductInform productInform){
-
-    }
-
     private void createTableHeader(List<Product> products){
         TextView idBoxTitle = initTextView("Ящик", TableRow.LayoutParams.WRAP_CONTENT, 1f);
         TextView countTitle = initTextView("Количество", TableRow.LayoutParams.WRAP_CONTENT, 1f);
@@ -151,11 +146,5 @@ public class ProductActivity extends AppCompatActivity {
                 });
         dialog = builder.create();
         dialog.show();
-    }
-
-    public void menuClick(View view){
-        Intent intent = new Intent(this, StartActivity.class);
-        startActivities(new Intent[]{intent});
-        finish();
     }
 }

@@ -18,15 +18,8 @@ public class SelectMoveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_move);
     }
 
-    public void onMenuClick(View view){
-        Intent intent = new Intent(this, StartActivity.class);
-        startActivities(new Intent[]{intent});
-        finish();
-    }
-
     public void boxOnBoxClick(View view){
         Intent intent = new Intent(this, MoveActivityBoxOnBox.class);
         startActivities(new Intent[]{intent});
-        finish();
     }
 }

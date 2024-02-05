@@ -53,25 +53,17 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="Меню"
-            android:onClick="backClick"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <Button
             android:id="@+id/informButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/backButton"
-            android:text="Что в ящике"
-            android:onClick="boxClick"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="25dp"
             android:enabled="false"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:onClick="boxClick"
+            android:text="Что в ящике"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
