@@ -14,6 +14,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -22,16 +23,21 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.allur_app.R;
+import com.example.allur_app.api.AllurApi;
 import com.example.allur_app.model.product.IdModel;
+import com.example.allur_app.model.product.Product;
+import com.example.allur_app.model.product.ProductInform;
 import com.example.allur_app.model.product.ScanProduct;
 import com.example.allur_app.model.states.MoveState;
 import com.example.allur_app.model.states.SoundState;
@@ -43,6 +49,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MoveActivityBoxOnBox extends AppCompatActivity {
     private MoveState moveState;
@@ -56,8 +65,9 @@ public class MoveActivityBoxOnBox extends AppCompatActivity {
     private Button deleteButton;
     private AlertDialog dialog;
 
-    private TextView fromBox;
+    private Spinner fromBox;
     private TextView toBox;
+    private TableRow boxRow;
 
     private final LinkedHashMap<String, ScanProduct> productMap = new LinkedHashMap<>();
     private final Map<String, Integer> idMap = new HashMap<>();
@@ -75,11 +85,15 @@ public class MoveActivityBoxOnBox extends AppCompatActivity {
         productTableLayout = findViewById(R.id.productTable);
         fromBox = findViewById(R.id.cellFrom);
         toBox = findViewById(R.id.cellTo);
+        boxRow = findViewById(R.id.tableRow);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("idBox")) {
             String idBox = intent.getStringExtra("idBox");
-            fromBox.setText(idBox);
+            String[] value = {intent.getStringExtra("idBox")};
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, value);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            fromBox.setAdapter(adapter);
             assert idBox != null;
             scanButton.setVisibility(View.VISIBLE);
             setSelectColor(fromBox, 0xFF98fb98);
@@ -132,14 +146,16 @@ public class MoveActivityBoxOnBox extends AppCompatActivity {
         idMap.clear();
     }
 
+    @SuppressLint("CheckResult")
     private void setData(String barcode){
         switch (moveState){
             case BOX_TO:{
-                String boxFromText = fromBox.getText().toString();
+                String boxFromText = fromBox.getSelectedItem() != null ?
+                        fromBox.getSelectedItem().toString() : "";
                 if(barcode.equals(boxFromText)){
                     if(productMap.isEmpty()) {
                         sound(SoundState.BAD);
-                        fromBox.setText("");
+                        setAdapter(new String[]{});
                         toBox.setText(barcode);
                         //showAlert("Ошибка!", "Выбери другой ящик!");
                     } else {
@@ -151,7 +167,12 @@ public class MoveActivityBoxOnBox extends AppCompatActivity {
                 break;
             }
             case BOX_FROM:{
+                /**
+                 * в этом месте делать проверку если код ящика то вставляем, а если код продукта то запрос к серверу и добавляем список ящиков где продукт есть
+                 * если в списке есть элемент "В" его удалить
+                 */
                 String boxToText = toBox.getText().toString();
+                if(barcode.toCharArray()[0] == 'Y' || barcode.toCharArray()[0] == 'y') {
                     if (barcode.equals(boxToText)) {
                         sound(SoundState.BAD);
                         showAlert("Ошибка!", "Выбери другой ящик!");
@@ -163,8 +184,38 @@ public class MoveActivityBoxOnBox extends AppCompatActivity {
                             sound(SoundState.BAD);
                             showAlert("Ошибка!", "Выбери другой ящик!");
                         }*/
-                    } else
-                        fromBox.setText(barcode);
+                    } else {
+                        setAdapter(new String[]{barcode});
+                        scanButton.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    AllurApi allurApi = new AllurApi();
+                    allurApi.getProductInform(barcode)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(result -> {
+                                if(result.getStatus() == 200){
+                                    ProductInform productInform = (ProductInform) result.getBody();
+                                    String[] value = getArrayStringResult(productInform.getProductInforms(), boxToText);
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, value);
+                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    fromBox.setAdapter(adapter);
+                                    String boxFromText = fromBox.getSelectedItem() != null ?
+                                            fromBox.getSelectedItem().toString() : "";
+                                    scanButton.setVisibility(View.VISIBLE);
+                                    if (boxFromText.equals(boxToText)) {
+                                        sound(SoundState.BAD);
+                                        showAlert("Ошибка!", "Выбери другой ящик!");
+                                        scanButton.setVisibility(View.INVISIBLE);
+                                    }
+                                }
+                                else {
+                                    showAlert("Ошибка!", "Не найдено!");
+                                }
+                            }, error -> {
+                                Log.e("API_REQUEST", "Error: " + error.getMessage());
+                            });
+                }
                 break;
             }
             case PRODUCT_SCAN: {
@@ -181,18 +232,35 @@ public class MoveActivityBoxOnBox extends AppCompatActivity {
                 }
             }
         }
-        if(!fromBox.getText().equals("Из: ") &&
+        String boxFromText = fromBox.getSelectedItem() != null ?
+                fromBox.getSelectedItem().toString() : "";
+        if(!boxFromText.equals("Из: ") &&
                 !toBox.getText().equals("В: ") &&
                 !productMap.isEmpty()){
             moveButton.setEnabled(true);
             deleteButton.setEnabled(true);
         }
 
-        if (fromBox.getText().toString().isEmpty()){
+        if (boxFromText.isEmpty()){
             scanButton.setVisibility(View.INVISIBLE);
         } else {
             scanButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    private String[] getArrayStringResult(List<Product> productInforms, String textBox){
+        int remIndex = -1;
+        for(int i = 0; i < productInforms.size(); i++){
+            if(textBox.equals("Y" + productInforms.get(i).getBoxId()))
+                remIndex = i;
+        }
+        if (remIndex != -1) productInforms.remove(remIndex);
+        String[] array = new String[productInforms.size()];
+        for(int i = 0; i < productInforms.size(); i++){
+            array[i] = "Y" + productInforms.get(i).getBoxId();
+        }
+
+        return array;
     }
 
 
@@ -322,4 +390,10 @@ public class MoveActivityBoxOnBox extends AppCompatActivity {
         } catch (Exception e){}
     }
 
+
+    private void setAdapter(String[] value){
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, value);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fromBox.setAdapter(adapter);
+    }
 }

@@ -36,27 +36,21 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black">
+                android:background="@color/white">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <Button
                     android:layout_weight="1"
-                    android:background="@color/white"
                     android:onClick="onToCellClick"
                     android:padding="8dp"
                     android:text="В: "
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:textSize="14sp"/>
+                <Button
                     android:layout_weight="1"
-                    android:background="@color/white"
                     android:onClick="onFromCellClick"
                     android:padding="8dp"
                     android:text="Из: "
-                    android:textSize="18sp" />
+                    android:textSize="14sp"/>
+
             </TableRow>
 
             <TableRow
@@ -76,16 +70,15 @@
                     android:padding="8dp"
                     android:textSize="18sp" />
 
-                <TextView
+                <Spinner
                     android:id="@+id/cellFrom"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:onClick="onFromCellClick"
-                    android:padding="8dp"
-                    android:textSize="18sp" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:padding="8dp"
+                android:textSize="18sp"/>
             </TableRow>
         </TableLayout>
 
